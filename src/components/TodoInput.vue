@@ -29,22 +29,22 @@ export default {
     components: {
         ModalWindow,
     },
-    data: function () {
+    data() {
         return {
             newTodoItem: "",
             showModal: false,
         };
     },
     methods: {
-        addTodo: function () {
+        addTodo() {
             if (this.newTodoItem !== "") {
-                this.$emit("addTodo", this.newTodoItem);
+                this.$store.commit("addTodo", this.newTodoItem);
                 this.clearInput();
             } else {
                 this.showModal = true;
             }
         },
-        clearInput: function () {
+        clearInput() {
             this.newTodoItem = "";
         },
     },

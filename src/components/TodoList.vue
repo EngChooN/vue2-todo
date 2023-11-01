@@ -11,14 +11,14 @@
                     <i
                         class="fa-solid fa-check checkBtn"
                         :class="{ checkBtnCompleted: todoItem.completed }"
-                        @click="toggleComplete(todoItem, index)"
+                        @click="toggleComplete({ todoItem, index })"
                     ></i>
                     <span :class="{ textCompleted: todoItem.completed }">
                         {{ todoItem.item }}
                     </span>
                     <span
                         class="removeBtn"
-                        @click="removeTodo(todoItem, index)"
+                        @click="removeTodo({ todoItem, index })"
                     >
                         <i class="fa-solid fa-trash-can"></i>
                     </span>
@@ -29,15 +29,41 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from "vuex";
+
 export default {
-    props: ["todoItems"],
     methods: {
-        removeTodo: function (todoItem, index) {
-            this.$emit("removeTodo", todoItem, index);
-        },
-        toggleComplete: function (todoItem, index) {
-            this.$emit("toggleComplete", todoItem, index);
-        },
+        // removeTodo(todoItem, index) {
+        //     this.$store.commit("removeTodo", {
+        //         todoItem,
+        //         index,
+        //     });
+        // },
+        // toggleComplete(todoItem, index) {
+        //     this.$store.commit("toggleComplete", {
+        //         todoItem,
+        //         index,
+        //     });
+        // },
+
+        // ...mapMutations({
+        //     removeTodo: "removeTodo",
+        //     toggleComplete: "toggleComplete"
+        // }),
+        ...mapMutations(["removeTodo", "toggleComplete"]),
+        // mutations의 인자는 템플릿 함수 부분에 인자를 {}로 묶어주면,
+        // 자동으로 뮤테이션에 객체형태로 들어가져서 따로 안써도 됨
+    },
+    computed: {
+        // mapState
+        ...mapState(["todoItems"]),
+
+        // mapGetters
+        ...mapGetters(["fetchStoredTodoItems"]),
+        // 또는 템플릿에서 사용하는 이름을 통일하지 않았다면
+        ...mapGetters({
+            todoItems: "fetchStoredTodoItems",
+        }),
     },
 };
 </script>
